@@ -7,7 +7,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-
   Animation<double> catAnimation;
   AnimationController catController;
 
@@ -19,15 +18,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       vsync: this,
     );
 
-    catAnimation = Tween(begin: 0.0, end: 100.0)
-      .animate(
-        CurvedAnimation(
-          parent: catController,
-          curve: Curves.easeIn,
-        ),
-      );
-
-    catController.forward();
+    catAnimation = Tween(begin: 0.0, end: 100.0).animate(
+      CurvedAnimation(
+        parent: catController,
+        curve: Curves.easeIn,
+      ),
+    );
   }
 
   Widget buildAnimation() {
@@ -43,6 +39,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
+  onTap() {
+    catController.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       appBar: AppBar(
         title: Text('Animation!'),
       ),
-      body: buildAnimation(),
+      body: GestureDetector(
+        child: buildAnimation(),
+        onTap: onTap,
+      ),
     );
   }
 }
