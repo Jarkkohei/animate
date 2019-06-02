@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/cat.dart';
+import 'dart:math';
 
 class Home extends StatefulWidget {
   @override
@@ -49,8 +50,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
+  Widget buildLeftFlap() {
+    return Positioned(
+      left: 3.0,
+      child: Transform.rotate(
+        angle: pi / 1.5,
+        alignment: Alignment.topLeft,
+        child: Container(
+          height: 5,
+          width: 100,
+          color: Colors.brown,
+        ),
+      ),
+    );
+  }
+
   onTap() {
-    if(catController.status == AnimationStatus.completed) {
+    if (catController.status == AnimationStatus.completed) {
       catController.reverse();
     } else if (catController.status == AnimationStatus.dismissed) {
       catController.forward();
@@ -67,9 +83,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         child: Center(
           child: Stack(
             overflow: Overflow.visible,
-            children: <Widget>[  
+            children: <Widget>[
               buildCatAnimation(),
               buildBox(),
+              buildLeftFlap(),
             ],
           ),
         ),
