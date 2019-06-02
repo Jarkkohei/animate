@@ -11,8 +11,33 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Animation<double> catAnimation;
   AnimationController catController;
 
+  Animation<double> boxAnimation;
+  AnimationController boxController;
+
   initState() {
     super.initState();
+
+    boxController = AnimationController(
+      duration: Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    boxAnimation = Tween(begin: pi * 0.6, end: pi * 0.65).animate(
+      CurvedAnimation(
+        parent: boxController,
+        curve: Curves.linear,
+      ),
+    );
+
+    boxAnimation.addStatusListener((status) {
+      if(status == AnimationStatus.completed) {
+        boxController.reverse();
+      } else if(status == AnimationStatus.dismissed) {
+        boxController.forward();
+      }
+    });
+
+    boxController.forward();
 
     catController = AnimationController(
       duration: Duration(milliseconds: 200),
@@ -53,14 +78,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget buildLeftFlap() {
     return Positioned(
       left: 3.0,
-      child: Transform.rotate(
-        angle: pi / 1.5,
-        alignment: Alignment.topLeft,
+      child: AnimatedBuilder(
+        animation: boxAnimation,
         child: Container(
           height: 5,
           width: 100,
           color: Colors.brown,
         ),
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: boxAnimation.value,
+            alignment: Alignment.topLeft,
+            child: child,
+          );
+        },
       ),
     );
   }
